@@ -2,7 +2,8 @@
 const main = document.getElementById('main');
 const increaseButton = document.getElementById('increase');
 const decreaseButton = document.getElementById('decrease');
-const showMillionairesButton = document.getElementById('show-millionaires');
+const showOneFiftyButton = document.getElementById('show-onefifty');
+const underSeventyButton = document.getElementById('show-underSeventy');
 const addEmployeeButton = document.getElementById('add-user');
 const sortButton = document.getElementById('sort');
 const calculateWealthButton = document.getElementById('calculate-wealth');
@@ -22,8 +23,6 @@ async function getRandomUser() {
   let responseData = await response.json();
 
   let user = responseData.results[0];
-  // console.log(responseData)
-  // console.log(user)
 
   let salary = Math.floor((Math.random() * 200000) + 35000);
 
@@ -31,16 +30,13 @@ async function getRandomUser() {
     name: `${user.name.first} ${user.name.last}`,
     salary: salary,
   };
-
   // console.log(newUser)
-
   // pass the new user into New Data
   addData(newUser);
 };
 
 // function to increase the salary of th employee
 function increaseSalary(){
-
   data = data.map((employee) => {
     return {...employee, salary: employee.salary * 1.10}
   });
@@ -50,14 +46,36 @@ function increaseSalary(){
 
 // function to decrease the salary of th employee
 function decreaseSalary(){
-
   data = data.map((employee) => {
-
     return {...employee, salary: employee.salary * .90}
   });
 
   updateDOM();
 };
+
+// order the salaries in Desc Order
+function orderSalaries(){
+  data.sort((a, b) => b.salary - a.salary);
+
+  updateDOM();
+}
+
+// filter employees making more than 150k
+function filterOneFifty(){
+  data = data.filter(employee => {
+    return employee.salary > 150000;
+  });
+
+  updateDOM();
+}
+// filter employees making less than 70k
+function filterUnderSeventy(){
+  data = data.filter(employee => {
+    return employee.salary < 70000;
+  });
+
+  updateDOM();
+}
 
 
 // push the new employee into our array with all the data
@@ -93,3 +111,6 @@ function formatSalary(sal) {
 addEmployeeButton.addEventListener('click', getRandomUser);
 increaseButton.addEventListener('click', increaseSalary);
 decreaseButton.addEventListener('click', decreaseSalary);
+sortButton.addEventListener('click', orderSalaries);
+showOneFiftyButton.addEventListener('click', filterOneFifty);
+underSeventyButton.addEventListener('click', filterUnderSeventy);
