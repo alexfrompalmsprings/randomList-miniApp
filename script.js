@@ -6,7 +6,7 @@ const showOneFiftyButton = document.getElementById('show-onefifty');
 const underSeventyButton = document.getElementById('show-underSeventy');
 const addEmployeeButton = document.getElementById('add-user');
 const sortButton = document.getElementById('sort');
-const calculateWealthButton = document.getElementById('calculate-wealth');
+const totalSalariesButton = document.getElementById('total-salaries');
 
 let data = [];
 
@@ -36,45 +36,73 @@ async function getRandomUser() {
 };
 
 // function to increase the salary of th employee
-function increaseSalary(){
+function increaseSalary() {
   data = data.map((employee) => {
-    return {...employee, salary: employee.salary * 1.10}
+    return {
+      ...employee,
+      salary: employee.salary * 1.10
+    }
   });
 
   updateDOM();
 };
 
 // function to decrease the salary of th employee
-function decreaseSalary(){
+function decreaseSalary() {
   data = data.map((employee) => {
-    return {...employee, salary: employee.salary * .90}
+    return {
+      ...employee,
+      salary: employee.salary * .90
+    }
   });
 
   updateDOM();
 };
 
 // order the salaries in Desc Order
-function orderSalaries(){
+function orderSalaries() {
   data.sort((a, b) => b.salary - a.salary);
 
   updateDOM();
 }
 
 // filter employees making more than 150k
-function filterOneFifty(){
+function filterOneFifty() {
   data = data.filter(employee => {
     return employee.salary > 150000;
   });
 
   updateDOM();
 }
+
 // filter employees making less than 70k
-function filterUnderSeventy(){
+function filterUnderSeventy() {
   data = data.filter(employee => {
     return employee.salary < 70000;
   });
 
   updateDOM();
+}
+
+// add all the salaries
+function totalSalaries() {
+  let total = data.reduce((total, employee) => {
+    return total += employee.salary;
+  }, 0);
+
+  // let totalElement = document.createElement('div');
+  // totalElement.innerHTML = `<h3>Total Salaries <strong>/strong></h3>`;
+  // main.appendChild(totalElement);
+
+
+
+  let totalElement = document.createElement('div');
+  totalElement.innerHTML = `<h3>Total Wealth: <strong>${formatSalary(
+    total
+  )}</strong></h3>`;
+  main.appendChild(totalElement);
+
+  // updateDOM();
 }
 
 
@@ -114,3 +142,4 @@ decreaseButton.addEventListener('click', decreaseSalary);
 sortButton.addEventListener('click', orderSalaries);
 showOneFiftyButton.addEventListener('click', filterOneFifty);
 underSeventyButton.addEventListener('click', filterUnderSeventy);
+totalSalariesButton.addEventListener('click', totalSalaries);
